@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>今天吃什么</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f5f5f5; padding: 20px; }
+        .container { max-width: 400px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .title { text-align: center; font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px; }
+        .food-list { height: 220px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; padding: 10px; margin-bottom: 25px; }
+        .food-item { margin: 8px 0; padding: 6px; cursor: pointer; border-radius: 4px; transition: background 0.2s; }
+        .food-item:hover { background: #f0f0f0; }
+        .food-item.selected { background: #e8f5e9; color: #2e7d32; font-weight: 500; }
+        .result { text-align: center; font-size: 20px; font-weight: bold; color: #666; min-height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; }
+        .choose-btn { background: #4CAF50; color: white; }
+        .btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">🍚 今天吃什么</div>
+        <div class="food-list" id="l"></div>
+        <div class="result" id="r"></div>
+        <button class="btn choose-btn" id="b">帮我选</button>
+    </div>
+
+    <script>
+        const f = [
+            "牛肉面", "黄焖鸡", "麻辣香锅", "螺蛳粉", "麻辣烫", "盖浇饭", "汉堡", "寿司",
+            "饺子", "馄饨", "米线", "披萨", "炸鸡", "减脂餐", "食堂套餐",
+            "鸡公煲", "铁锅焖面", "重庆小面", "火锅", "炒面片", "炒拉条", "大盘鸡", "猪蹄煲",
+            "烤肉拌饭", "炸酱面", "自选米饭", "武汉热干面", "烤串", "肉蛋堡", "麻酱火鸡面",
+            "梅菜扣肉饼", "香葱大饼", "煎饼果子", "饭团"
+        ];
+
+        const l = document.getElementById('l');
+        const r = document.getElementById('r');
+        const b = document.getElementById('b');
+
+        f.forEach(food => {
+            const i = document.createElement('div');
+            i.className = 'food-item';
+            i.textContent = food;
+            i.onclick = () => i.classList.toggle('selected');
+            l.appendChild(i);
+        });
+
+        b.onclick = () => {
+            const e = Array.from(document.querySelectorAll('.food-item.selected')).map(i => i.textContent);
+            const c = f.filter(f => !e.includes(f));
+            
+            if (!c.length) {
+                r.textContent = '无';
+                r.style.color = 'red';
+                return;
+            }
+
+            let n = 0;
+            const a = () => {
+                if (n < 30) {
+                    r.textContent = c[Math.floor(Math.random() * c.length)];
+                    r.style.color = 'orange';
+                    n++;
+                    setTimeout(a, 50);
+                } else {
+                    r.textContent = c[Math.floor(Math.random() * c.length)];
+                    r.style.color = 'green';
+                }
+            };
+            a();
+        };
+    </script>
+</body>
+</html>
